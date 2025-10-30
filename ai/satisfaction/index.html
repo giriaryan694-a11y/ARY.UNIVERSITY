@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced AI Resources - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .theme-toggle:hover {
+            box-shadow: 0 5px 20px rgba(0, 100, 200, 0.3);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.dark .back-button {
+            color: #00ff88;
+        }
+
+        body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+            color: #0066cc;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid #00ff88;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8)); }
+        }
+
+        .content-section {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .content-section {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        body.dark .content-section h2 {
+            color: #00d4ff;
+        }
+
+        body.light .content-section h2 {
+            color: #0066cc;
+        }
+
+        .content-section h3 {
+            font-size: 1.5em;
+            margin: 25px 0 15px;
+        }
+
+        body.dark .content-section h3 {
+            color: #00ff88;
+        }
+
+        body.light .content-section h3 {
+            color: #0066cc;
+        }
+
+        .content-section p {
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        .content-section ul {
+            margin: 15px 0 15px 25px;
+            line-height: 1.8;
+        }
+
+        .content-section li {
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left-color: #ffc107;
+        }
+
+        body.light .warning-box {
+            background: rgba(255, 152, 0, 0.1);
+            border-left-color: #ff9800;
+        }
+
+        .warning-box h3 {
+            margin-top: 0;
+        }
+
+        body.dark .warning-box h3 {
+            color: #ffc107;
+        }
+
+        body.light .warning-box h3 {
+            color: #ff9800;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .resource-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        body.dark .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .resource-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+
+        body.dark .resource-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: #00ff88;
+        }
+
+        body.light .resource-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);
+            border-color: #0066cc;
+        }
+
+        .resource-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        body.dark .resource-card h4 {
+            color: #00d4ff;
+        }
+
+        body.light .resource-card h4 {
+            color: #0066cc;
+        }
+
+        .resource-card p {
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        body.dark .resource-card p {
+            color: #ccc;
+        }
+
+        body.light .resource-card p {
+            color: #555;
+        }
+
+        .resource-card a {
+            display: inline-block;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        body.dark .resource-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .resource-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .resource-card a:hover {
+            transform: scale(1.05);
+        }
+
+        .steps-container {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .steps-container {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.2);
+        }
+
+        body.light .steps-container {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 153, 255, 0.1));
+            border: 2px solid rgba(0, 102, 204, 0.2);
+        }
+
+        .step {
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .step {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        body.light .step {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        body.dark .step-number {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .step-number {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .big-button {
+            display: inline-block;
+            padding: 20px 50px;
+            font-size: 1.3em;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 20px 10px;
+            text-align: center;
+        }
+
+        body.dark .big-button {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .big-button {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);
+        }
+
+        .big-button:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        body.dark .big-button:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
+        }
+
+        body.light .big-button:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.5);
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .big-button {
+                padding: 15px 35px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../ai/index.html" class="back-button">
+        <span>← Back</span>
+    </a>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>🚀 Advanced AI Resources & Security</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="content-section">
+            <h2>Local AI Models for Cybersecurity Research</h2>
+            <p>Running AI models locally gives you complete control, privacy, and flexibility for cybersecurity research and learning. Unlike cloud-based services, local models allow you to experiment freely without restrictions, perfect for educational purposes and ethical hacking research.</p>
+            
+            <h3>Why Use Local AI Models?</h3>
+            <ul>
+                <li><strong>Privacy & Data Security:</strong> Your queries and research stay completely private on your machine</li>
+                <li><strong>No Rate Limits:</strong> Use AI as much as you need without quotas or restrictions</li>
+                <li><strong>Offline Access:</strong> Work anywhere without internet dependency</li>
+                <li><strong>Customization:</strong> Fine-tune models for specific cybersecurity tasks</li>
+                <li><strong>Educational Freedom:</strong> Learn and experiment with AI capabilities safely</li>
+                <li><strong>Cost-Effective:</strong> No subscription fees after initial setup</li>
+            </ul>
+        </section>
+
+        <div class="warning-box">
+            <h3>⚠️ Important Legal & Ethical Guidelines</h3>
+            <p><strong>Local AI Usage:</strong> Using local AI models for learning and ethical hacking research is completely legal and encouraged. You have full freedom to experiment and learn on your own infrastructure.</p>
+            <p><strong>Online Services:</strong> When using cloud-based AI services, always respect the Terms of Service and company policies. Attempting to bypass safety measures or violate ToS can result in account termination and potential legal consequences.</p>
+            <p><strong>Best Practice:</strong> For unrestricted learning and experimentation, use locally hosted models. For cloud services, use them as intended within their guidelines.</p>
+        </div>
+
+        <section class="content-section">
+            <h2>🛠️ Essential Platforms for Local AI</h2>
+            
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>🤗 Hugging Face</h4>
+                    <p>The world's largest repository of open-source AI models. Find thousands of models for various tasks, from language understanding to code generation.</p>
+                    <a href="https://huggingface.co/" target="_blank">Explore Hugging Face</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🦙 Ollama (Recommended)</h4>
+                    <p>The easiest way to run large language models locally. Simple installation, one-command model downloads, and excellent performance optimization.</p>
+                    <a href="https://ollama.com/" target="_blank">Download Ollama</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🔍 Ollama Model Search</h4>
+                    <p>Browse and discover AI models optimized for Ollama. Find models specifically trained for coding, security, and general-purpose tasks.</p>
+                    <a href="https://ollama.com/search" target="_blank">Search Models</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>☁️ Free Cloud GPU Resources</h2>
+            <p>Don't have a powerful GPU? No problem! These platforms provide free access to high-performance hardware for running AI models.</p>
+
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>🔬 Google Colab (Recommended)</h4>
+                    <p>Free access to GPUs and TPUs. Perfect for running large AI models without any local hardware requirements. Most popular choice for AI experimentation.</p>
+                    <a href="https://colab.research.google.com/" target="_blank">Launch Colab</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>📊 Kaggle</h4>
+                    <p>Get free weekly GPU/TPU hours with excellent hardware integration. Great community and datasets for machine learning experiments.</p>
+                    <a href="https://www.kaggle.com/" target="_blank">Try Kaggle</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>📚 How to Use Google Colab with Hugging Face</h2>
+            <p>Follow these simple steps to run any AI model from Hugging Face on Google Colab's free GPUs:</p>
+
+            <div class="steps-container">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Search for a Model:</strong> Visit Hugging Face and search for the AI model you want to use (e.g., "cybersecurity", "code generation", "Llama").
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Go to Model Page:</strong> Click on the model you're interested in to open its detailed page with information and usage instructions.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Find "Use this model":</strong> Look for the "Use this model" button or dropdown on the model page (usually near the top).
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Select Google Colab:</strong> Click on the button and select "Google Colab" from the options.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Run in Colab:</strong> You'll be redirected to Google Colab with pre-configured code. Just click "Run" and start experimenting!
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>🛡️ AI Security & Cybersecurity Research</h2>
+            
+            <h3>AI in Cybersecurity Defense</h3>
+            <p>Artificial Intelligence is revolutionizing cybersecurity defense mechanisms. Modern AI systems can analyze millions of security events per second, identifying patterns and anomalies that would be impossible for humans to detect manually.</p>
+            
+            <ul>
+                <li><strong>Threat Detection:</strong> ML algorithms identify zero-day exploits and advanced persistent threats in real-time</li>
+                <li><strong>Automated Response:</strong> AI systems can automatically isolate infected systems and initiate incident response protocols</li>
+                <li><strong>Vulnerability Assessment:</strong> Deep learning models scan code and infrastructure for security weaknesses</li>
+                <li><strong>Phishing Detection:</strong> NLP models analyze emails and messages to identify sophisticated social engineering attacks</li>
+                <li><strong>Network Traffic Analysis:</strong> AI monitors network behavior to detect malicious activities and data exfiltration attempts</li>
+            </ul>
+
+            <h3>AI Security Research Areas</h3>
+            <p>The intersection of AI and cybersecurity opens fascinating research opportunities:</p>
+            
+            <ul>
+                <li><strong>Adversarial Machine Learning:</strong> Understanding how attackers can manipulate AI systems and developing defenses</li>
+                <li><strong>AI Model Security:</strong> Protecting AI models from theft, poisoning, and backdoor attacks</li>
+                <li><strong>Privacy-Preserving AI:</strong> Developing AI systems that can learn without compromising sensitive data</li>
+                <li><strong>Automated Penetration Testing:</strong> Using AI to discover vulnerabilities and generate exploit chains</li>
+                <li><strong>Malware Analysis:</strong> Training models to identify and classify malicious software variants</li>
+                <li><strong>Security Operations:</strong> Automating SOC workflows and reducing alert fatigue with intelligent triage</li>
+            </ul>
+
+            <h3>Deep Research Topics</h3>
+            <p>For those interested in advanced AI security research:</p>
+            
+            <ul>
+                <li><strong>Explainable AI in Security:</strong> Making AI security decisions transparent and auditable</li>
+                <li><strong>Federated Learning for Threat Intelligence:</strong> Collaborative learning without sharing sensitive data</li>
+                <li><strong>AI-Powered Deception Technology:</strong> Creating intelligent honeypots and decoy systems</li>
+                <li><strong>Quantum-Resistant AI Security:</strong> Preparing AI systems for post-quantum cryptography era</li>
+                <li><strong>AI Ethics in Offensive Security:</strong> Establishing guidelines for responsible AI use in security testing</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>🔐 AI Model Security Best Practices</h2>
+            <p>When working with AI models for security research, follow these best practices:</p>
+            
+            <ul>
+                <li>Always validate model outputs - AI can make mistakes or be manipulated</li>
+                <li>Keep your local models updated with latest security patches</li>
+                <li>Use sandboxed environments when testing potentially harmful code</li>
+                <li>Document your research methodology for reproducibility</li>
+                <li>Respect responsible disclosure when discovering vulnerabilities</li>
+                <li>Never use AI to generate malware for malicious purposes</li>
+                <li>Understand the ethical implications of your security research</li>
+            </ul>
+        </section>
+
+        <div class="center">
+            <a href="jailbreak" class="big-button">🔓 Advanced AI Techniques</a>
+        </div>
+    </div>
+
+    <script>
+        // Cookie functions
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        // Load theme from cookie on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            }
+        });
+    </script>
+</body>
+</html>
