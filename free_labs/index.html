@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Labs - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.dark .back-button {
+            color: #00ff88;
+        }
+
+        body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+            color: #0066cc;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .lab-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .lab-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .lab-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .lab-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        body.light .lab-card::before {
+            background: linear-gradient(45deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        }
+
+        .lab-card:hover::before {
+            left: 100%;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-10px);
+        }
+
+        body.dark .lab-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            border-color: #00ff88;
+        }
+
+        body.light .lab-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+            border-color: #0066cc;
+        }
+
+        .lab-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lab-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .lab-card h3 {
+            color: #00d4ff;
+        }
+
+        body.light .lab-card h3 {
+            color: #0066cc;
+        }
+
+        .lab-card .category {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .lab-card .category {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        body.light .lab-card .category {
+            background: rgba(0, 102, 204, 0.2);
+            color: #0066cc;
+            border: 1px solid #0066cc;
+        }
+
+        .lab-card p {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .lab-card p {
+            color: #ccc;
+        }
+
+        body.light .lab-card p {
+            color: #555;
+        }
+
+        .lab-card .features {
+            margin: 15px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lab-card .features li {
+            padding: 8px 0;
+            list-style: none;
+        }
+
+        .lab-card .features li::before {
+            content: "✓ ";
+            font-weight: bold;
+        }
+
+        body.dark .lab-card .features li::before {
+            color: #00ff88;
+        }
+
+        body.light .lab-card .features li::before {
+            color: #0066cc;
+        }
+
+        .lab-card a {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            margin-top: 10px;
+        }
+
+        body.dark .lab-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .lab-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .lab-card a:hover {
+            transform: scale(1.05);
+        }
+
+        body.dark .lab-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        body.light .lab-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 102, 204, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .labs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../index.html" class="back-button">
+        <span>← Back</span>
+    </a>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>🔬 Free Cybersecurity Labs</h1>
+            <p class="intro-text">Practice your skills in safe, legal environments with these world-class platforms</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="labs-grid">
+            <!-- PortSwigger -->
+            <div class="lab-card">
+                <div class="lab-icon">🌐</div>
+                <h3>PortSwigger Web Security Academy</h3>
+                <span class="category">Web Penetration Testing</span>
+                <p>The most comprehensive free training platform for web application security. Created by the makers of Burp Suite, featuring interactive labs covering SQL injection, XSS, CSRF, and dozens of other vulnerabilities.</p>
+                <ul class="features">
+                    <li>Hundreds of interactive labs from beginner to expert</li>
+                    <li>Free Burp Suite Community Edition included</li>
+                    <li>Mystery lab challenges for exam preparation</li>
+                    <li>Certification path available</li>
+                </ul>
+                <a href="https://portswigger.net/web-security/all-labs" target="_blank">Start Learning</a>
+            </div>
+
+            <!-- Hack The Box -->
+            <div class="lab-card">
+                <div class="lab-icon">📦</div>
+                <h3>Hack The Box</h3>
+                <span class="category">Penetration Testing</span>
+                <p>Gamified cybersecurity training platform with 1.7M+ users. Features virtual machines, challenges, and realistic corporate scenarios. Perfect for offensive and defensive security training.</p>
+                <ul class="features">
+                    <li>450+ hacking labs across 300+ machines</li>
+                    <li>Weekly new machine and challenge releases</li>
+                    <li>HTB Academy with guided learning paths</li>
+                    <li>Active community and competitions</li>
+                </ul>
+                <a href="https://www.hackthebox.com/" target="_blank">Join HTB</a>
+            </div>
+
+            <!-- TryHackMe -->
+            <div class="lab-card">
+                <div class="lab-icon">🎮</div>
+                <h3>TryHackMe</h3>
+                <span class="category">Beginner-Friendly Training</span>
+                <p>Learn cybersecurity through short, gamified real-world labs. Features cloud-hosted VMs deployable with one click. Over 4M users trust TryHackMe for offensive, defensive, and cloud security training.</p>
+                <ul class="features">
+                    <li>800+ real-world cyber scenarios</li>
+                    <li>Guided learning paths for all skill levels</li>
+                    <li>Browser-based, no downloads required</li>
+                    <li>Free tier with extensive content</li>
+                </ul>
+                <a href="https://tryhackme.com/" target="_blank">Explore THM</a>
+            </div>
+
+            <!-- PicoCTF -->
+            <div class="lab-card">
+                <div class="lab-icon">🚩</div>
+                <h3>PicoCTF</h3>
+                <span class="category">CTF Competition</span>
+                <p>World's largest free hacking competition from Carnegie Mellon University. Designed for middle school through professional level. Features picoGym for year-round practice with cryptography, forensics, web exploitation, and binary challenges.</p>
+                <ul class="features">
+                    <li>550,000+ active users worldwide</li>
+                    <li>Annual competition with prizes</li>
+                    <li>picoGym available 24/7</li>
+                    <li>Progressive difficulty levels</li>
+                </ul>
+                <a href="https://picoctf.org/" target="_blank">Play PicoCTF</a>
+            </div>
+
+            <!-- OverTheWire -->
+            <div class="lab-card">
+                <div class="lab-icon">⚔️</div>
+                <h3>OverTheWire</h3>
+                <span class="category">Linux & Command Line</span>
+                <p>Collection of wargames teaching security concepts through hands-on challenges. Start with Bandit for Linux basics, progress to Leviathan for binary analysis, and Narnia for buffer overflows. Perfect for building fundamental skills.</p>
+                <ul class="features">
+                    <li>Multiple progressive wargame series</li>
+                    <li>Focus on Linux fundamentals and scripting</li>
+                    <li>Binary exploitation and reverse engineering</li>
+                    <li>Active community support</li>
+                </ul>
+                <a href="https://overthewire.org/" target="_blank">Start Wargames</a>
+            </div>
+
+            <!-- Hack This Site -->
+            <div class="lab-card">
+                <div class="lab-icon">🌟</div>
+                <h3>Hack This Site</h3>
+                <span class="category">Ethical Hacking</span>
+                <p>One of the oldest and most respected free hacking training grounds. Features basic to advanced challenges teaching web application security, programming, cryptography, and steganography in a safe, legal environment.</p>
+                <ul class="features">
+                    <li>Basic, Realistic, and Advanced missions</li>
+                    <li>Application security challenges</li>
+                    <li>Programming and logic puzzles</li>
+                    <li>Large community forums</li>
+                </ul>
+                <a href="https://www.hackthissite.org/" target="_blank">Hack This Site</a>
+            </div>
+
+            <!-- VulnHub -->
+            <div class="lab-card">
+                <div class="lab-icon">💿</div>
+                <h3>VulnHub</h3>
+                <span class="category">Offline Virtual Machines</span>
+                <p>Download vulnerable virtual machines for offline penetration testing practice. Features hundreds of community-created VMs covering network pentesting, web exploitation, privilege escalation, and real-world scenarios. Perfect for building a personal lab.</p>
+                <ul class="features">
+                    <li>500+ vulnerable VMs to download</li>
+                    <li>Run locally with VirtualBox/VMware</li>
+                    <li>Beginner to advanced difficulty levels</li>
+                    <li>Community walkthroughs available</li>
+                </ul>
+                <a href="https://www.vulnhub.com/" target="_blank">Download VMs</a>
+            </div>
+
+            <!-- XSS Game -->
+            <div class="lab-card">
+                <div class="lab-icon">🎯</div>
+                <h3>XSS Game by Google</h3>
+                <span class="category">XSS Specialization</span>
+                <p>Google's interactive training platform dedicated to Cross-Site Scripting (XSS) vulnerabilities. Six progressive levels teaching you to find and exploit XSS bugs. Learn the coding patterns that lead to XSS and how to prevent them.</p>
+                <ul class="features">
+                    <li>6 levels of XSS challenges</li>
+                    <li>Real-world vulnerable scenarios</li>
+                    <li>Hints and source code provided</li>
+                    <li>Browser-based, instant access</li>
+                </ul>
+                <a href="https://xss-game.appspot.com/" target="_blank">Play XSS Game</a>
+            </div>
+
+            <!-- Google Gruyere -->
+            <div class="lab-card">
+                <div class="lab-icon">🧀</div>
+                <h3>Google Gruyere</h3>
+                <span class="category">Web Security</span>
+                <p>Intentionally vulnerable web application from Google. Practice finding and exploiting common web security flaws including XSS, CSRF, information disclosure, denial of service, and path traversal vulnerabilities.</p>
+                <ul class="features">
+                    <li>Realistic vulnerable web application</li>
+                    <li>Multiple vulnerability types</li>
+                    <li>Detailed exploitation guides</li>
+                    <li>Learn defensive techniques</li>
+                </ul>
+                <a href="https://google-gruyere.appspot.com/" target="_blank">Access Gruyere</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            }
+        });
+    </script>
+</body>
+</html>
