@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Resources - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .category-section {
+            margin: 50px 0;
+        }
+
+        .category-header {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        body.dark .category-header {
+            color: #00d4ff;
+            border-bottom-color: #00ff88;
+        }
+
+        body.light .category-header {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .resource-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .resource-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px);
+        }
+
+        body.dark .resource-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            border-color: #00ff88;
+        }
+
+        body.light .resource-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+            border-color: #0066cc;
+        }
+
+        .resource-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .resource-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        body.dark .resource-card h3 { color: #00d4ff; }
+        body.light .resource-card h3 { color: #0066cc; }
+
+        .resource-card p {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+
+        body.dark .resource-card p { color: #ccc; }
+        body.light .resource-card p { color: #555; }
+
+        .resource-card a {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .resource-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .resource-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .resource-card a:hover { transform: scale(1.05); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .resources-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>🎁 Extra Resources</h1>
+            <p class="intro-text">Curated collection of essential tools, cheatsheets, and comprehensive resources</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- My Personal Projects -->
+        <section class="category-section">
+            <h2 class="category-header">📚 My Curated Resource Hubs</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">🔒</div>
+                    <h3>Privacy Cheatsheets Hub</h3>
+                    <p>Comprehensive guide to online privacy and security. Learn about VPNs, encryption, secure messaging, anonymous browsing, and protecting your digital footprint.</p>
+                    <a href="https://giriaryan694-a11y.github.io/Privacy-Cheatsheets-Hub/" target="_blank">Explore Privacy</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🎯</div>
+                    <h3>RedTeam Arsenal</h3>
+                    <p>Your Ultimate Pentest & Red Team Cheatsheets Hub. Comprehensive collection of curated resources, cheatsheets, and tools for security professionals, penetration testers, and red teamers.</p>
+                    <a href="https://giriaryan694-a11y.github.io/RedTeam-Arsenal/" target="_blank">Access Arsenal</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🔍</div>
+                    <h3>Ary.Recon</h3>
+                    <p>Comprehensive web-based passive reconnaissance tools directory. Find the best tools for information gathering, domain enumeration, and OSINT research.</p>
+                    <a href="https://giriaryan694-a11y.github.io/Ary-Recon/" target="_blank">Start Recon</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🕵️</div>
+                    <h3>ary.osint</h3>
+                    <p>Comprehensive, well-organized directory of Open Source Intelligence (OSINT) tools, resources, and research materials. Centralized launcher for security researchers and OSINT enthusiasts.</p>
+                    <a href="https://giriaryan694-a11y.github.io/ary.osint/" target="_blank">Browse OSINT</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool Repositories -->
+        <section class="category-section">
+            <h2 class="category-header">🛠️ Comprehensive Tool Repositories</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">🐉</div>
+                    <h3>Kali Linux Tools</h3>
+                    <p>Complete repository of 600+ penetration testing tools from Kali Linux. Browse tools by category including exploitation, forensics, wireless, web applications, and information gathering.</p>
+                    <a href="https://www.kali.org/tools/all-tools/" target="_blank">View Tools</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">⚫</div>
+                    <h3>BlackArch Tools</h3>
+                    <p>Extensive repository of 2,870+ security tools for Arch Linux. Organized by category for penetration testing, forensics, reverse engineering, and malware analysis.</p>
+                    <a href="https://blackarch.org/tools.html" target="_blank">Explore BlackArch</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🔧</div>
+                    <h3>SecTools.org</h3>
+                    <p>Top 125 network security tools curated by the Nmap Project. Features tools voted most useful by security professionals, including Nmap, Wireshark, Metasploit, and more.</p>
+                    <a href="https://sectools.org/" target="_blank">Top Security Tools</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Specialized Tool Collections -->
+        <section class="category-section">
+            <h2 class="category-header">⚔️ Specialized Tool Collections</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">🎯</div>
+                    <h3>OffSec Tools</h3>
+                    <p>Community-driven collection of offensive security tools. Searchable database of pentesting tools with descriptions, categories, and direct links to resources.</p>
+                    <a href="https://offsec.tools/" target="_blank">Browse OffSec</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🚀</div>
+                    <h3>GTFOBins</h3>
+                    <p>Curated list of Unix binaries that can be used to bypass local security restrictions. Essential for privilege escalation and breaking out of restricted shells.</p>
+                    <a href="https://gtfobins.github.io/" target="_blank">GTFO Bins</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">💼</div>
+                    <h3>LOLBAS Project</h3>
+                    <p>Living Off The Land Binaries, Scripts and Libraries. Windows binaries that can be abused by attackers to bypass application whitelisting and gain code execution.</p>
+                    <a href="https://lolbas-project.github.io/" target="_blank">View LOLBAS</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🛡️</div>
+                    <h3>PentestTools.net</h3>
+                    <p>Collection of online penetration testing tools. Includes subdomain finder, port scanner, vulnerability scanner, and other web-based security testing utilities.</p>
+                    <a href="https://pentesttools.net/" target="_blank">Use Tools</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- GitHub Awesome Lists -->
+        <section class="category-section">
+            <h2 class="category-header">⭐ Awesome GitHub Collections</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">🎓</div>
+                    <h3>Awesome Hacking</h3>
+                    <p>Massive collection of awesome lists for hackers, pentesters, and security researchers. Includes tutorials, tools, CTF resources, security courses, and bug bounty platforms.</p>
+                    <a href="https://github.com/Hack-with-Github/Awesome-Hacking" target="_blank">View on GitHub</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🔐</div>
+                    <h3>Awesome Pentest</h3>
+                    <p>Comprehensive collection of penetration testing resources, tools, and frameworks. Organized by category including network tools, web exploitation, wireless, and social engineering.</p>
+                    <a href="https://github.com/enaqx/awesome-pentest" target="_blank">View on GitHub</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🔴</div>
+                    <h3>Awesome Red Teaming</h3>
+                    <p>Curated list of awesome red team / red teaming resources. Covers adversary emulation, initial access, execution, persistence, privilege escalation, and lateral movement.</p>
+                    <a href="https://github.com/yeyintminthuhtut/Awesome-Red-Teaming" target="_blank">View on GitHub</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">💣</div>
+                    <h3>PayloadsAllTheThings</h3>
+                    <p>Massive list of useful payloads and bypasses for web application security. Includes SQL injection, XSS, command injection, SSRF, file upload, and authentication bypass techniques.</p>
+                    <a href="https://github.com/swisskyrepo/PayloadsAllTheThings" target="_blank">View on GitHub</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
