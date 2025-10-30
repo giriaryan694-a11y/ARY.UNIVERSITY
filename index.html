@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARY.UNIVERSITY - Free Cybersecurity Education</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .theme-toggle:hover {
+            box-shadow: 0 5px 20px rgba(0, 100, 200, 0.3);
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 2px solid #00ff88;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+            transition: all 0.3s ease;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 102, 204, 0.2);
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8)); }
+        }
+
+        .tagline {
+            font-size: 1.4em;
+            font-style: italic;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .tagline {
+            color: #00ff88;
+            text-shadow: 0 2px 10px rgba(0, 255, 136, 0.5);
+        }
+
+        body.light .tagline {
+            color: #0066cc;
+            text-shadow: 0 2px 10px rgba(0, 102, 204, 0.3);
+        }
+
+        .mission {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .mission {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .mission {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .mission h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .mission h2 {
+            color: #00d4ff;
+        }
+
+        body.light .mission h2 {
+            color: #0066cc;
+        }
+
+        .mission p {
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .importance-section {
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .importance-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        body.light .importance-section {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 153, 255, 0.1));
+            border-color: rgba(0, 102, 204, 0.2);
+        }
+
+        .importance-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .importance-section h2 {
+            color: #00ff88;
+        }
+
+        body.light .importance-section h2 {
+            color: #0066cc;
+        }
+
+        .importance-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .importance-section li {
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid;
+            border-radius: 8px;
+            font-size: 1.05em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        body.dark .importance-section li {
+            background: rgba(0, 0, 0, 0.3);
+            border-left-color: #00ff88;
+        }
+
+        body.light .importance-section li {
+            background: rgba(255, 255, 255, 0.5);
+            border-left-color: #0066cc;
+        }
+
+        .importance-section li:hover {
+            transform: translateX(10px);
+        }
+
+        body.dark .importance-section li:hover {
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .importance-section li:hover {
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .resource-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .resource-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        body.light .resource-card::before {
+            background: linear-gradient(45deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        }
+
+        .resource-card:hover::before {
+            left: 100%;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px);
+        }
+
+        body.dark .resource-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            border-color: #00ff88;
+        }
+
+        body.light .resource-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+            border-color: #0066cc;
+        }
+
+        .resource-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .resource-card h3 {
+            color: #00d4ff;
+        }
+
+        body.light .resource-card h3 {
+            color: #0066cc;
+        }
+
+        .resource-card p {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .resource-card p {
+            color: #ccc;
+        }
+
+        body.light .resource-card p {
+            color: #555;
+        }
+
+        .resource-card a {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .resource-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .resource-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .resource-card a:hover {
+            transform: scale(1.05);
+        }
+
+        body.dark .resource-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        body.light .resource-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 102, 204, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 2px solid;
+            margin-top: 60px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark footer {
+            background: rgba(0, 0, 0, 0.5);
+            border-top-color: #00ff88;
+        }
+
+        body.light footer {
+            background: rgba(255, 255, 255, 0.5);
+            border-top-color: #0066cc;
+        }
+
+        footer p {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .creator {
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .creator {
+            color: #00ff88;
+        }
+
+        body.light .creator {
+            color: #0066cc;
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .section-title {
+            color: #00d4ff;
+        }
+
+        body.light .section-title {
+            color: #0066cc;
+        }
+
+        body.light .footer-tagline {
+            color: #0066cc !important;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mission, .importance-section {
+                padding: 25px;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>ARY.UNIVERSITY</h1>
+            <p class="tagline">"Knowledge should be free for everyone"</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="mission">
+            <h2>My Mission</h2>
+            <p>Welcome to ARY.UNIVERSITY, where I believe in democratizing cybersecurity education. In today's digital age, cybersecurity knowledge isn't just for IT professionals—it's essential for everyone. I've curated the best free resources from across the internet to help you become a world-class cybersecurity professional, regardless of your background or financial situation.</p>
+            <p>Whether you're just starting your journey or looking to advance your skills, I provide carefully selected materials that cover everything from basic security concepts to advanced penetration testing and threat analysis.</p>
+        </section>
+
+        <section class="importance-section">
+            <h2>Why Cybersecurity Matters</h2>
+            <ul>
+                <li><strong>🛡️ Digital Privacy Protection:</strong> Cybersecurity safeguards your personal information, financial data, and digital identity from malicious actors and unauthorized access.</li>
+                
+                <li><strong>💼 Career Opportunities:</strong> The cybersecurity field is experiencing explosive growth with millions of unfilled positions worldwide, offering lucrative careers and job security.</li>
+                
+                <li><strong>🌐 Critical Infrastructure Defense:</strong> Protecting essential services like healthcare, energy, finance, and transportation systems from devastating cyber attacks is paramount to national security.</li>
+                
+                <li><strong>💰 Economic Protection:</strong> Cybercrime costs the global economy trillions annually. Skilled professionals are needed to defend businesses and prevent catastrophic financial losses.</li>
+                
+                <li><strong>🔐 Data Breach Prevention:</strong> With data breaches affecting millions of users yearly, cybersecurity expertise helps organizations protect customer trust and comply with regulations.</li>
+                
+                <li><strong>🚀 Innovation Enablement:</strong> Strong cybersecurity allows businesses to innovate confidently, adopt new technologies, and drive digital transformation safely.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="section-title">Free Learning Resources</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="icon">📱</div>
+                    <h3>Social Media</h3>
+                    <p>Follow cybersecurity experts, join communities, and stay updated with the latest threats and trends.</p>
+                    <a href="social_media">Explore Communities</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="icon">🎓</div>
+                    <h3>Online Courses</h3>
+                    <p>Free comprehensive courses from beginner to advanced levels covering all cybersecurity domains.</p>
+                    <a href="online_courses">Start Learning</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="icon">🎤</div>
+                    <h3>Cool Conferences</h3>
+                    <p>Access talks and presentations from top cybersecurity conferences worldwide, for all skill levels.</p>
+                    <a href="conferences">Watch Talks</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="icon">🔬</div>
+                    <h3>Free Labs</h3>
+                    <p>Hands-on practice environments to test your skills safely and learn through real-world scenarios.</p>
+                    <a href="free_labs">Practice Now</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="icon">🤖</div>
+                    <h3>AI</h3>
+                    <p>Explore AI-powered tools and resources for cybersecurity automation, threat detection, and analysis.</p>
+                    <a href="ai">Discover AI Tools</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="creator">Made by Aryan Giri</p>
+        <p class="footer-tagline" style="color: #00ff88; margin-top: 15px;">"Empowering the next generation of cybersecurity defenders"</p>
+    </footer>
+
+    <script>
+        // Cookie functions
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        // Load theme from cookie on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            }
+        });
+    </script>
+</body>
+</html>
