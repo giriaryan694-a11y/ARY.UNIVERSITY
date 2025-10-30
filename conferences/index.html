@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conferences - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.dark .back-button {
+            color: #00ff88;
+        }
+
+        body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+            color: #0066cc;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .conference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 35px;
+            margin: 50px 0;
+        }
+
+        .conference-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 35px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .conference-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .conference-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .conference-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        body.light .conference-card::before {
+            background: linear-gradient(45deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        }
+
+        .conference-card:hover::before {
+            left: 100%;
+        }
+
+        .conference-card:hover {
+            transform: translateY(-10px);
+        }
+
+        body.dark .conference-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            border-color: #00ff88;
+        }
+
+        body.light .conference-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+            border-color: #0066cc;
+        }
+
+        .conference-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .conference-card h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .conference-card h3 {
+            color: #00d4ff;
+        }
+
+        body.light .conference-card h3 {
+            color: #0066cc;
+        }
+
+        .conference-card .category {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .conference-card .category {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        body.light .conference-card .category {
+            background: rgba(0, 102, 204, 0.2);
+            color: #0066cc;
+            border: 1px solid #0066cc;
+        }
+
+        .conference-card p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05em;
+        }
+
+        body.dark .conference-card p {
+            color: #ccc;
+        }
+
+        body.light .conference-card p {
+            color: #555;
+        }
+
+        .conference-card .highlights {
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .conference-card .highlights li {
+            padding: 10px 0;
+            list-style: none;
+            font-size: 0.95em;
+        }
+
+        .conference-card .highlights li::before {
+            content: "▸ ";
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        body.dark .conference-card .highlights li::before {
+            color: #00ff88;
+        }
+
+        body.light .conference-card .highlights li::before {
+            color: #0066cc;
+        }
+
+        .conference-card .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .conference-card a {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            font-size: 0.95em;
+        }
+
+        body.dark .conference-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .conference-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .conference-card a:hover {
+            transform: scale(1.05);
+        }
+
+        body.dark .conference-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        body.light .conference-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 102, 204, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .conference-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .conference-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../index.html" class="back-button">
+        <span>← Back</span>
+    </a>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>🎤 World-Class Security Conferences</h1>
+            <p class="intro-text">Learn from the best: thousands of hours of expert talks, workshops, and cutting-edge research</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="conference-grid">
+            <!-- DEF CON -->
+            <div class="conference-card">
+                <div class="conference-icon">🎯</div>
+                <h3>DEF CON</h3>
+                <span class="category">World's Largest Hacker Conference</span>
+                <p>The legendary underground hacking conference held annually in Las Vegas since 1993. With 30,000+ attendees, DEF CON is where the brightest security minds share groundbreaking research, compete in CTF challenges, and explore 30+ specialized villages covering everything from car hacking to AI security.</p>
+                <ul class="highlights">
+                    <li>Cutting-edge security research presentations</li>
+                    <li>32+ specialized villages (Aerospace, IoT, AI, Bug Bounty, RF, etc.)</li>
+                    <li>World-famous Capture The Flag competitions</li>
+                    <li>Hands-on workshops and live hacking demos</li>
+                    <li>All levels: from beginners to nation-state experts</li>
+                </ul>
+                <div class="button-group">
+                    <a href="https://www.youtube.com/@DEFCONConference/playlists" target="_blank">Watch Talks</a>
+                    <a href="https://www.youtube.com/@DEFCONConference/podcasts" target="_blank">Podcasts</a>
+                </div>
+            </div>
+
+            <!-- Black Hat -->
+            <div class="conference-card">
+                <div class="conference-icon">🎩</div>
+                <h3>Black Hat</h3>
+                <span class="category">Professional Security Briefings</span>
+                <p>Premier cybersecurity conference founded in 1997, bringing together CISOs, researchers, and InfoSec professionals worldwide. Known for groundbreaking vulnerability disclosures and high-quality technical briefings covering emerging threats, zero-days, and advanced security research across multiple global locations.</p>
+                <ul class="highlights">
+                    <li>100+ expert technical briefings and presentations</li>
+                    <li>Professional training courses for all skill levels</li>
+                    <li>Arsenal: open-source security tool demonstrations</li>
+                    <li>Enterprise-focused security insights and trends</li>
+                    <li>Global events in Las Vegas, London, and beyond</li>
+                </ul>
+                <div class="button-group">
+                    <a href="https://www.youtube.com/@BlackHatOfficialYT/playlists" target="_blank">Watch Briefings</a>
+                </div>
+            </div>
+
+            <!-- Bug Bounty Village -->
+            <div class="conference-card">
+                <div class="conference-icon">🐛</div>
+                <h3>Bug Bounty Village</h3>
+                <span class="category">Bug Hunter Community</span>
+                <p>Dedicated village at DEF CON celebrating the global bug bounty community. Features exclusive talks from world-class bug hunters sharing real vulnerabilities and techniques, workshops for all skill levels, and insights from major companies running bug bounty programs. The perfect place to learn ethical hacking for profit.</p>
+                <ul class="highlights">
+                    <li>Top bug hunters revealing their methodologies</li>
+                    <li>Real-world vulnerability case studies and PoCs</li>
+                    <li>Beginner to advanced bug hunting workshops</li>
+                    <li>Platform representatives sharing insider tips</li>
+                    <li>Hands-on exercises with Burp Suite and tools</li>
+                </ul>
+                <div class="button-group">
+                    <a href="https://www.youtube.com/@BugBountyVillage/playlists" target="_blank">Watch Sessions</a>
+                </div>
+            </div>
+
+            <!-- RF Hackers Sanctuary -->
+            <div class="conference-card">
+                <div class="conference-icon">📡</div>
+                <h3>RF Hackers Sanctuary</h3>
+                <span class="category">Radio Frequency Security</span>
+                <p>Community of experts specializing in WiFi, Software Defined Radio (SDR), and RF security. Hosts the Radio Frequency Village at DEF CON and other conferences, teaching offensive and defensive techniques for all the invisible signals around us—from RFID and NFC to satellite communications and IoT devices.</p>
+                <ul class="highlights">
+                    <li>WiFi and wireless protocol security training</li>
+                    <li>Software Defined Radio (SDR) workshops</li>
+                    <li>RF Capture The Flag competitions and challenges</li>
+                    <li>Antenna design and signal analysis techniques</li>
+                    <li>Beginner-friendly with virtual lab environment</li>
+                </ul>
+                <div class="button-group">
+                    <a href="https://www.youtube.com/@RFHackersSanctuary/playlists" target="_blank">Watch Talks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            }
+        });
+    </script>
+</body>
+</html>
