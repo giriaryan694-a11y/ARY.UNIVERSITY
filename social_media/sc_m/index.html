@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Manipulation - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .content-section {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .content-section {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        body.dark .content-section h2 { color: #00d4ff; }
+        body.light .content-section h2 { color: #0066cc; }
+
+        .content-section h3 {
+            font-size: 1.5em;
+            margin: 25px 0 15px;
+        }
+
+        body.dark .content-section h3 { color: #00ff88; }
+        body.light .content-section h3 { color: #0066cc; }
+
+        .content-section p {
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 15px 0 15px 25px;
+            line-height: 1.8;
+        }
+
+        .content-section li {
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid;
+        }
+
+        body.dark .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left-color: #ffc107;
+        }
+
+        body.light .warning-box {
+            background: rgba(255, 152, 0, 0.1);
+            border-left-color: #ff9800;
+        }
+
+        .warning-box h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        body.dark .warning-box h3 { color: #ffc107; }
+        body.light .warning-box h3 { color: #ff9800; }
+
+        .tip-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid;
+        }
+
+        body.dark .tip-box {
+            background: rgba(0, 255, 136, 0.1);
+            border-left-color: #00ff88;
+        }
+
+        body.light .tip-box {
+            background: rgba(0, 153, 76, 0.1);
+            border-left-color: #00994c;
+        }
+
+        .rating-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .rating-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .rating-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .rating-card h4 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        body.dark .rating-card h4 { color: #00d4ff; }
+        body.light .rating-card h4 { color: #0066cc; }
+
+        .stars {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        body.dark .stars { color: #ffc107; }
+        body.light .stars { color: #ff9800; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .content-section { padding: 25px; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../social_media/index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>🎯 Master Social Media Algorithms</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="content-section">
+            <h2>Understanding Social Media Algorithms</h2>
+            
+            <h3>What Are Algorithms?</h3>
+            <p>Social media algorithms are complex mathematical formulas and machine learning models that determine what content appears in your feed. They analyze your behavior—what you like, share, comment on, watch, and how long you engage with content—to predict what you'll find interesting and keep you on the platform longer.</p>
+            
+            <p>Think of algorithms as intelligent content curators. They track thousands of signals: your viewing time, scroll patterns, search history, accounts you interact with, and even the time of day you're most active. This data builds a detailed profile of your interests to serve you personalized content.</p>
+
+            <h3>Why This Matters for Cybersecurity Learning</h3>
+            <p>By default, social media algorithms show you a mix of everything—entertainment, news, random viral content. But if you're serious about learning cybersecurity, you need to train these algorithms to show you ONLY relevant professional content. This transforms social media from a distraction into a powerful learning tool.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>The Easiest Way to Train Algorithms</h2>
+            
+            <h3>1. Search for What You Want</h3>
+            <p>The simplest method to train algorithms is to <strong>actively search for cybersecurity content</strong> on the platform. Search for terms like "penetration testing," "ethical hacking," "bug bounty," "OSINT," "network security," etc. The algorithm immediately notes your interests and starts recommending similar content.</p>
+            
+            <h3>2. Use Separate Accounts for Different Content</h3>
+            <p>This is the most powerful strategy: <strong>Create dedicated accounts for specific purposes.</strong></p>
+            
+            <ul>
+                <li><strong>Cybersecurity Account:</strong> Only follow security professionals, bug bounty hunters, infosec researchers. Only search, like, and interact with security content.</li>
+                <li><strong>Personal Account:</strong> Keep separate for entertainment, hobbies, spirituality, or other interests.</li>
+                <li><strong>Programming Account:</strong> If you're learning coding, create another account dedicated to programming tutorials and developer content.</li>
+            </ul>
+            
+            <p>This separation ensures each account's algorithm is laser-focused on one topic. No distractions, no mixing content types—just pure, targeted learning material.</p>
+        </section>
+
+        <div class="tip-box">
+            <h3>💡 Pro Tip: Like Everything You Want to See</h3>
+            <p>The best way to manipulate social media algorithms is simple: <strong>like, save, and engage with content you want more of.</strong> When you see a great cybersecurity tutorial, don't just watch it—like it, comment on it, save it, and share it. The algorithm interprets these signals as "show me more of this!" and adjusts your feed accordingly.</p>
+        </div>
+
+        <section class="content-section">
+            <h2>Platform-Specific Manipulation Techniques</h2>
+            
+            <h3>YouTube</h3>
+            <ul>
+                <li>Use the <strong>"Not Interested"</strong> button on irrelevant videos to teach YouTube what to avoid</li>
+                <li>Click the three dots → <strong>"Don't recommend channel"</strong> for content you don't want</li>
+                <li>Use the <strong>feedback option</strong> to tell YouTube explicitly what you like/dislike</li>
+                <li>Subscribe to cybersecurity channels and enable notifications</li>
+                <li>Create playlists of security videos to signal your interests</li>
+                <li>Watch videos to completion—this is a strong positive signal</li>
+            </ul>
+
+            <h3>Instagram</h3>
+            <ul>
+                <li>Use the <strong>"Interested"</strong> button (heart icon) on cybersecurity posts</li>
+                <li>Use <strong>"Not Interested"</strong> on irrelevant content—this is crucial</li>
+                <li>Follow cybersecurity accounts and infosec influencers</li>
+                <li>Engage with stories and reels about security topics</li>
+                <li>Save posts you find valuable to a collection</li>
+            </ul>
+
+            <h3>X (Twitter)</h3>
+            <ul>
+                <li>Follow security researchers, bug bounty hunters, and CTF players</li>
+                <li>Like and retweet cybersecurity threads and tips</li>
+                <li>Create lists of security professionals to organize your feed</li>
+                <li>Use Twitter's "Not interested in this" option on off-topic content</li>
+                <li>Search for security hashtags like #bugbounty #infosec #cybersecurity</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>🏆 Algorithm Manipulation Rating (Easiest to Train)</h2>
+            
+            <div class="rating-card">
+                <h4>1. TikTok</h4>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p><strong>Why it's #1:</strong> TikTok has the most aggressive and responsive algorithm. Just follow a few good cybersecurity creators, interact with their content, and <strong>don't search for anything else.</strong> Within days, your entire For You page will be cybersecurity-focused.</p>
+                <p><strong>Strategy:</strong> Follow cybersecurity content creators (get recommendations from ChatGPT/Claude), like their videos, watch them fully, and avoid searching for or engaging with other topics. TikTok learns extremely fast.</p>
+                <p><strong>Privacy Note:</strong> TikTok is banned in many countries. Use a VPN with a burner identity (temp email) to protect your personal information. Consider using the desktop web version or a sandboxed environment for added security.</p>
+            </div>
+
+            <div class="rating-card">
+                <h4>2. X (Twitter)</h4>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Twitter's algorithm is highly responsive to your follows and interactions. Follow the right security people, engage with security threads, and your timeline transforms quickly into a cybersecurity news feed.</p>
+            </div>
+
+            <div class="rating-card">
+                <h4>3. YouTube</h4>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>YouTube's recommendation algorithm is powerful but takes more time to train. Consistent engagement with security content, use of feedback options, and aggressive "Not Interested" clicking will eventually give you a highly curated feed.</p>
+            </div>
+
+            <div class="rating-card">
+                <h4>4. Instagram</h4>
+                <div class="stars">⭐⭐⭐</div>
+                <p>Instagram's algorithm is good but slower than TikTok or Twitter. Regular use of "Interested/Not Interested" and following security accounts will eventually show you relevant content, but it takes patience.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Verifying People and Information</h2>
+            
+            <h3>How to Verify People's Credibility</h3>
+            <p>Not everyone claiming to be a security expert is legitimate. Before trusting someone's advice or recommendations, verify their credibility:</p>
+            
+            <ul>
+                <li><strong>OSINT Them:</strong> Search their username across platforms. Real professionals have consistent presence and history.</li>
+                <li><strong>Check LinkedIn:</strong> Verify their work experience, education, and professional endorsements. Real security professionals usually have detailed profiles.</li>
+                <li><strong>Cross-Reference Social Media:</strong> Check their Twitter, GitHub, blog, YouTube. Legitimate experts have multiple platforms with consistent expertise.</li>
+                <li><strong>Look for Credentials:</strong> Check for recognized certifications (OSCP, CEH, CISSP) or contributions to open-source projects.</li>
+                <li><strong>Community Reputation:</strong> See if they're mentioned or recommended by other known security professionals.</li>
+            </ul>
+        </section>
+
+        <div class="warning-box">
+            <h3>⚠️ Critical: Verify AI Information & Tutorial Claims</h3>
+            <p><strong>Always fact-check AI responses and tutorial claims.</strong> AI can hallucinate information, and many YouTubers make false claims for views.</p>
+            
+            <p><strong>Example:</strong> Many YouTube tutorials claim you can "trace IMEI number location" by installing random tools from GitHub. This is often FALSE and potentially dangerous. IMEI tracking requires law enforcement access and carrier cooperation—no random GitHub script can do this.</p>
+            
+            <p><strong>Before trusting any tool or technique:</strong></p>
+            <ul>
+                <li>Research if the claim is technically possible</li>
+                <li>Check multiple sources, not just one video</li>
+                <li>Read tool documentation and reviews</li>
+                <li>Search for security community discussions about it</li>
+                <li>Be skeptical of "too good to be true" claims</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>🚨 Beware of Malicious "Hacking Tools"</h3>
+            <p><strong>Many promoted "hacking tools" can hack YOU instead.</strong></p>
+            
+            <p>People share tools claiming to do amazing things—IP tracking, password cracking, social media hacking. But some of these tools contain:</p>
+            <ul>
+                <li><strong>Backdoors:</strong> Hidden code that gives the creator access to your system</li>
+                <li><strong>Botnets:</strong> Your device becomes part of a botnet for DDoS attacks</li>
+                <li><strong>Keyloggers:</strong> Steals your passwords and sensitive information</li>
+                <li><strong>Ransomware:</strong> Encrypts your files and demands payment</li>
+                <li><strong>Cryptocurrency Miners:</strong> Uses your resources to mine crypto without permission</li>
+            </ul>
+            
+            <p><strong>Safety Practices:</strong></p>
+            <ul>
+                <li>Only download tools from trusted, verified sources</li>
+                <li>Check the tool's GitHub repository—look for stars, forks, recent activity, and community trust</li>
+                <li>Read the source code if possible (or ask AI to analyze it)</li>
+                <li>Use virtual machines or sandboxed environments to test unknown tools</li>
+                <li>Scan everything with VirusTotal before running</li>
+                <li>Never run random scripts with elevated privileges</li>
+            </ul>
+        </div>
+
+        <section class="content-section">
+            <h2>Privacy-First Approach for TikTok</h2>
+            
+            <p>Since TikTok is banned in many countries and has privacy concerns, here's how to use it safely for learning:</p>
+            
+            <ol>
+                <li><strong>Use a VPN:</strong> Connect through a VPN to access TikTok if it's banned in your region</li>
+                <li><strong>Burner Identity:</strong> Create account with a temporary email (tempmail.com, guerrillamail.com)</li>
+                <li><strong>Don't Link Personal Info:</strong> No real phone number, no personal email, no real name</li>
+                <li><strong>Desktop/Web Version:</strong> Use TikTok's web interface instead of mobile app for better privacy</li>
+                <li><strong>Sandboxed Environment:</strong> Use tools like Sandboxie or a virtual machine if using the app</li>
+                <li><strong>Limited Permissions:</strong> Don't grant unnecessary permissions (contacts, location, camera access when not needed)</li>
+            </ol>
+        </section>
+
+        <div class="tip-box">
+            <h3>🎯 Action Plan Summary</h3>
+            <ol>
+                <li>Create separate accounts for cybersecurity on each platform</li>
+                <li>Search ONLY for security-related content on these accounts</li>
+                <li>Aggressively like, save, and engage with relevant content</li>
+                <li>Use "Not Interested" ruthlessly on irrelevant content</li>
+                <li>Follow verified security professionals (cross-check their credentials)</li>
+                <li>Ask AI tools (ChatGPT, Claude) for recommendations of good creators to follow</li>
+                <li>Verify all information and tools before trusting them</li>
+                <li>Use VPN + burner identity for privacy-concerning platforms</li>
+                <li>Test unknown tools in sandboxed/VM environments only</li>
+            </ol>
+        </div>
+
+        <section class="content-section">
+            <h2>Final Thoughts</h2>
+            <p>Social media algorithms are powerful tools that can either distract you or accelerate your learning exponentially. By understanding how they work and deliberately training them, you transform these platforms into personalized cybersecurity learning machines.</p>
+            
+            <p>Remember: consistency is key. The algorithm learns from repeated patterns. Stay disciplined about what you engage with, and within weeks, your social media feeds will be completely transformed into valuable educational resources.</p>
+        </section>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
