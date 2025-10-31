@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .featured-card {
+            backdrop-filter: blur(10px);
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .featured-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 83, 0.1));
+            border-color: #ff6b6b;
+        }
+
+        body.light .featured-card {
+            background: linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(255, 152, 0, 0.1));
+            border-color: #ff5722;
+        }
+
+        .featured-card h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        body.dark .featured-card h2 { color: #ff6b6b; }
+        body.light .featured-card h2 { color: #ff5722; }
+
+        .featured-card p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .featured-button {
+            display: inline-block;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        body.dark .featured-button {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        body.light .featured-button {
+            background: linear-gradient(45deg, #ff5722, #ff9800);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(255, 87, 34, 0.3);
+        }
+
+        .featured-button:hover {
+            transform: scale(1.1) translateY(-5px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .platform-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 35px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .platform-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .platform-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        body.light .platform-card::before {
+            background: linear-gradient(45deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        }
+
+        .platform-card:hover::before {
+            left: 100%;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-10px);
+        }
+
+        body.dark .platform-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            border-color: #00ff88;
+        }
+
+        body.light .platform-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+            border-color: #0066cc;
+        }
+
+        .platform-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .platform-card h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .platform-card h3 { color: #00d4ff; }
+        body.light .platform-card h3 { color: #0066cc; }
+
+        .platform-card p {
+            line-height: 1.8;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05em;
+        }
+
+        body.dark .platform-card p { color: #ccc; }
+        body.light .platform-card p { color: #555; }
+
+        .platform-card a {
+            display: inline-block;
+            padding: 12px 35px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .platform-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .platform-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .platform-card a:hover { transform: scale(1.05); }
+
+        body.dark .platform-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        body.light .platform-card a:hover {
+            box-shadow: 0 5px 20px rgba(0, 102, 204, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .platforms-grid { grid-template-columns: 1fr; }
+            .featured-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>📱 Social Media for Cybersecurity</h1>
+            <p class="intro-text">Connect with experts, stay updated, and join the global cybersecurity community</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Featured Section -->
+        <div class="featured-card">
+            <h2>🎯 Master Your Social Media Algorithm</h2>
+            <p>Learn how social media algorithms work and train them to show you cybersecurity content exclusively. Discover techniques to curate your feed for maximum learning and professional growth.</p>
+            <a href="sc_m" class="featured-button">Learn Algorithm Manipulation</a>
+        </div>
+
+        <!-- Platforms Grid -->
+        <div class="platforms-grid">
+            <!-- YouTube -->
+            <div class="platform-card">
+                <div class="platform-icon">📺</div>
+                <h3>YouTube Channels</h3>
+                <p>Discover the best cybersecurity YouTube channels. Learn from expert tutorials, conference talks, CTF walkthroughs, and security research presentations. Visual learning at its finest.</p>
+                <a href="youtube">Watch & Learn</a>
+            </div>
+
+            <!-- Discord -->
+            <div class="platform-card">
+                <div class="platform-icon">💬</div>
+                <h3>Discord Communities</h3>
+                <p>Join active Discord servers where hackers, pentesters, and security professionals collaborate. Get real-time help, participate in CTFs, share knowledge, and network with peers worldwide.</p>
+                <a href="discord">Join Servers</a>
+            </div>
+
+            <!-- X/Twitter -->
+            <div class="platform-card">
+                <div class="platform-icon">𝕏</div>
+                <h3>X (Twitter)</h3>
+                <p>Follow security researchers, bug bounty hunters, and InfoSec experts. Stay updated with latest vulnerabilities, zero-days, security news, and industry trends in real-time.</p>
+                <a href="X">Follow Experts</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
