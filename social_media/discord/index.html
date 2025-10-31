@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Communities - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left-color: #ffc107;
+        }
+
+        body.light .warning-box {
+            background: rgba(255, 152, 0, 0.1);
+            border-left-color: #ff9800;
+        }
+
+        .warning-box h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        body.dark .warning-box h3 { color: #ffc107; }
+        body.light .warning-box h3 { color: #ff9800; }
+
+        .warning-box p {
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .server-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .server-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .server-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .server-card:hover {
+            transform: translateY(-5px);
+        }
+
+        body.dark .server-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: #00ff88;
+        }
+
+        body.light .server-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);
+            border-color: #0066cc;
+        }
+
+        .server-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 12px;
+        }
+
+        body.dark .server-card h3 { color: #00d4ff; }
+        body.light .server-card h3 { color: #0066cc; }
+
+        .server-card .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border: 1px solid;
+        }
+
+        body.dark .server-card .badge {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        body.light .server-card .badge {
+            background: rgba(255, 87, 34, 0.2);
+            color: #ff5722;
+            border-color: #ff5722;
+        }
+
+        .server-card p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        body.dark .server-card p { color: #ccc; }
+        body.light .server-card p { color: #555; }
+
+        .server-card a {
+            display: inline-block;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        body.dark .server-card a {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0f0c29;
+        }
+
+        body.light .server-card a {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: #fff;
+        }
+
+        .server-card a:hover { transform: scale(1.05); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .servers-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../social_media/index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>💬 Discord Cybersecurity Communities</h1>
+            <p class="intro-text">Join active communities, learn from experts, and network with fellow security professionals</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="warning-box">
+            <h3>⚠️ Stay Safe Online</h3>
+            <p><strong>Be cautious of scams and impersonation:</strong> Some Discord servers may have scammers posing as moderators or experts. Never share personal information, credentials, or send money to strangers. Verify identities through official channels and be skeptical of unsolicited DMs offering "opportunities" or asking for sensitive data. Real communities and moderators will never ask for your passwords or payment outside official processes.</p>
+        </div>
+
+        <div class="servers-grid">
+            <!-- BHIS - Most Recommended -->
+            <div class="server-card">
+                <h3>Black Hills InfoSec (BHIS)</h3>
+                <span class="badge">MOST RECOMMENDED</span>
+                <p>55K+ members. Premier community for infosec professionals. Ask questions, attend live webcasts, participate in discussions, and learn from industry experts at Black Hills Information Security.</p>
+                <a href="https://discord.gg/bhis" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Simply Cyber -->
+            <div class="server-card">
+                <h3>Simply Cyber</h3>
+                <p>17K+ members. Supportive, inclusive community for anyone wanting to learn cybersecurity. Daily Cyber Threat Briefings, AMAs, and livestreams with experts. Founded by Dr. Gerald Auger.</p>
+                <a href="https://discord.gg/simplycyber" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Hack The Box -->
+            <div class="server-card">
+                <h3>Hack The Box</h3>
+                <p>Official HTB community. Get help with machines, discuss challenges, participate in events, and connect with 1.7M+ platform users worldwide.</p>
+                <a href="https://discord.gg/hackthebox" target="_blank">Join Server</a>
+            </div>
+
+            <!-- TryHackMe -->
+            <div class="server-card">
+                <h3>TryHackMe</h3>
+                <p>Official THM Discord with 4M+ learners. Beginner-friendly community for discussing rooms, getting hints, and collaborating on cybersecurity challenges.</p>
+                <a href="https://discord.gg/tryhackme" target="_blank">Join Server</a>
+            </div>
+
+            <!-- DEF CON -->
+            <div class="server-card">
+                <h3>DEF CON</h3>
+                <p>Official Discord for the world's largest hacker conference. Connect with attendees, discuss talks, join villages, and stay updated on DEF CON events.</p>
+                <a href="https://discord.gg/defcon" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Red Team Village -->
+            <div class="server-card">
+                <h3>Red Team Village</h3>
+                <p>Community focused on offensive security and red teaming. Learn adversary tactics, participate in competitions, and network with red team professionals.</p>
+                <a href="https://discord.gg/redteamvillage" target="_blank">Join Server</a>
+            </div>
+
+            <!-- The Cyber Mentor -->
+            <div class="server-card">
+                <h3>The Cyber Mentor (TCM)</h3>
+                <p>Community for TCM Security students and cybersecurity learners. Get course support, discuss certifications, and learn ethical hacking.</p>
+                <a href="https://discord.gg/tcm" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Antisyphon Training -->
+            <div class="server-card">
+                <h3>Antisyphon Training</h3>
+                <p>Pay-what-you-can cybersecurity training community. Access free courses, get training support, and connect with students learning InfoSec skills.</p>
+                <a href="https://discord.gg/antisyphon" target="_blank">Join Server</a>
+            </div>
+
+            <!-- PortSwigger -->
+            <div class="server-card">
+                <h3>PortSwigger</h3>
+                <p>Official community for Burp Suite and Web Security Academy. Discuss web vulnerabilities, get lab help, and learn from PortSwigger experts.</p>
+                <a href="https://discord.gg/portswigger" target="_blank">Join Server</a>
+            </div>
+
+            <!-- NahamSec -->
+            <div class="server-card">
+                <h3>NahamSec</h3>
+                <p>Bug bounty community by Ben Sadeghipour (@NahamSec). Learn bug hunting, discuss vulnerabilities, and connect with successful bounty hunters.</p>
+                <a href="https://discord.gg/nahamsec-598608711186907146" target="_blank">Join Server</a>
+            </div>
+
+            <!-- jhaddix -->
+            <div class="server-card">
+                <h3>jhaddix</h3>
+                <p>Community by Jason Haddix, VP of Research at BugCrowd. Learn advanced bug bounty techniques and methodology from industry leaders.</p>
+                <a href="https://discord.gg/jhaddix" target="_blank">Join Server</a>
+            </div>
+
+            <!-- CTF Time -->
+            <div class="server-card">
+                <h3>CTF</h3>
+                <p>Capture The Flag community. Find teams, discuss challenges, share writeups, and participate in global CTF competitions.</p>
+                <a href="https://discord.gg/ctf" target="_blank">Join Server</a>
+            </div>
+
+            <!-- HackFest -->
+            <div class="server-card">
+                <h3>HackFest Canada</h3>
+                <p>Canadian cybersecurity conference community. Network with professionals, discuss talks, and stay updated on HackFest events.</p>
+                <a href="https://discord.gg/hackfest-ca-724131514161561653" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Flipper Zero Unofficial -->
+            <div class="server-card">
+                <h3>Flipper Zero (Unofficial)</h3>
+                <p>Community for Flipper Zero hardware hacking tool. Share projects, get device support, and learn about RFID, NFC, and radio protocols.</p>
+                <a href="https://discord.gg/flipperzero-unofficial" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Hack This Site -->
+            <div class="server-card">
+                <h3>Hack This Site</h3>
+                <p>Official Discord for HackThisSite.org. Get challenge hints, discuss web security, and learn ethical hacking fundamentals.</p>
+                <a href="https://discord.gg/hack-this-site-193774599719223297" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Threat Hunter -->
+            <div class="server-card">
+                <h3>Threat Hunter</h3>
+                <p>Community focused on threat hunting and detection. Learn blue team skills, discuss SOC operations, and share threat intelligence.</p>
+                <a href="https://discord.gg/threathunter" target="_blank">Join Server</a>
+            </div>
+
+            <!-- TechHaus -->
+            <div class="server-card">
+                <h3>TechHaus</h3>
+                <p>Technology and cybersecurity enthusiasts community. Discuss latest tech, security news, and learn together.</p>
+                <a href="https://discord.gg/techhaus" target="_blank">Join Server</a>
+            </div>
+
+            <!-- BASI -->
+            <div class="server-card">
+                <h3>BASI (Bug Bounty And Security Info)</h3>
+                <p>Bug bounty and security research community. Share findings, discuss methodologies, and collaborate on security research.</p>
+                <a href="https://discord.gg/basi" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Rootkits -->
+            <div class="server-card">
+                <h3>Rootkits</h3>
+                <p>Low-level security and malware analysis community. Learn about rootkits, kernel exploitation, and reverse engineering.</p>
+                <a href="https://discord.gg/rootkits" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Caido -->
+            <div class="server-card">
+                <h3>Caido</h3>
+                <p>Community for Caido web security testing toolkit. Modern alternative to traditional proxy tools for security testing.</p>
+                <a href="https://discord.gg/caido-843915806748180492" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Try Hard Security -->
+            <div class="server-card">
+                <h3>Try Hard Security</h3>
+                <p>Dedicated security learning community. Practice pentesting, discuss certifications, and improve your hacking skills.</p>
+                <a href="https://discord.gg/tryhardsecurity" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Trace Labs -->
+            <div class="server-card">
+                <h3>Trace Labs</h3>
+                <p>OSINT for good. Participate in Search Party CTFs to help find missing persons using open source intelligence techniques.</p>
+                <a href="https://discord.gg/trace-labs-808030986276569118" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Project Owl -->
+            <div class="server-card">
+                <h3>Project Owl</h3>
+                <p>Cybersecurity research and learning community. Collaborate on projects and advance your security knowledge.</p>
+                <a href="https://discord.gg/projectowl" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Reverse Engineering -->
+            <div class="server-card">
+                <h3>Reverse Engineering</h3>
+                <p>Dedicated community for reverse engineering, malware analysis, and binary exploitation. Learn RE techniques and tools.</p>
+                <a href="https://discord.gg/reverse-engineering-391398885819547652" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Darknet Diaries -->
+            <div class="server-card">
+                <h3>Darknet Diaries</h3>
+                <p>Community for the popular Darknet Diaries podcast. Discuss cybercrime stories, hacking incidents, and security tales.</p>
+                <a href="https://discord.gg/darknetdiaries" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Root-Me -->
+            <div class="server-card">
+                <h3>Root-Me</h3>
+                <p>French hacking challenge platform community. Practice on hundreds of challenges covering various security domains.</p>
+                <a href="https://discord.gg/rootme" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Gray Swan AI -->
+            <div class="server-card">
+                <h3>Gray Swan AI</h3>
+                <p>Community focused on AI security and adversarial machine learning. Explore the intersection of AI and cybersecurity.</p>
+                <a href="https://discord.gg/grayswanai" target="_blank">Join Server</a>
+            </div>
+
+            <!-- Additional Servers (compact list) -->
+            <div class="server-card">
+                <h3>More Communities</h3>
+                <p>Additional Discord servers for various cybersecurity topics and specializations:</p>
+                <a href="https://discord.gg/WFmtJrNQ" target="_blank" style="margin: 5px; display: inline-block;">Server 1</a>
+                <a href="https://discord.gg/CwVbuZnv" target="_blank" style="margin: 5px; display: inline-block;">Server 2</a>
+                <a href="https://discord.gg/5KJCSzPN" target="_blank" style="margin: 5px; display: inline-block;">Server 3</a>
+                <a href="https://discord.gg/KScbGJGN" target="_blank" style="margin: 5px; display: inline-block;">Server 4</a>
+                <a href="https://discord.gg/xnkrmR4z" target="_blank" style="margin: 5px; display: inline-block;">Server 5</a>
+                <a href="https://discord.gg/JktMGcAs" target="_blank" style="margin: 5px; display: inline-block;">Server 6</a>
+                <a href="https://discord.gg/fryt2Mez" target="_blank" style="margin: 5px; display: inline-block;">Server 7</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
