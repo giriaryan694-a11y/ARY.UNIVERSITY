@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X (Twitter) - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .intro-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .intro-box {
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .intro-box h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        body.dark .intro-box h2 { color: #00d4ff; }
+        body.light .intro-box h2 { color: #0066cc; }
+
+        .intro-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        .highlight {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        body.dark .highlight { color: #00ff88; }
+        body.light .highlight { color: #0066cc; }
+
+        .category-section {
+            margin: 50px 0;
+        }
+
+        .category-header {
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        body.dark .category-header {
+            color: #00d4ff;
+            border-bottom-color: #00ff88;
+        }
+
+        body.light .category-header {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .account-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        body.dark .account-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .account-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .account-card:hover {
+            transform: translateY(-5px);
+        }
+
+        body.dark .account-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: #00ff88;
+        }
+
+        body.light .account-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);
+            border-color: #0066cc;
+        }
+
+        .account-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        body.dark .account-card h3 { color: #00d4ff; }
+        body.light .account-card h3 { color: #0066cc; }
+
+        .account-card .handle {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+
+        body.dark .account-card .handle { color: #00ff88; }
+        body.light .account-card .handle { color: #0066cc; }
+
+        .account-card p {
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        body.dark .account-card p { color: #ccc; }
+        body.light .account-card p { color: #555; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .accounts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../social_media/index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>𝕏 Cybersecurity Professionals on X</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro-box">
+            <h2>🌟 A Vast Community of Experts</h2>
+            <p>X (formerly Twitter) hosts <span class="highlight">over 400+ cybersecurity professionals, researchers, and officials</span> sharing their expertise, latest research, and breaking security news daily.</p>
+            <p>Listing all of them would be incredibly challenging, so I've curated a selection of the most influential and respected voices in the cybersecurity community to get you started.</p>
+            <p><strong>Pro Tip:</strong> Once you follow these accounts, X's algorithm will recommend similar security professionals to expand your network organically!</p>
+        </div>
+
+        <!-- Legendary Voices -->
+        <section class="category-section">
+            <h2 class="category-header">🏆 Legendary Voices</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/briankrebs" class="account-card" target="_blank">
+                    <h3>Brian Krebs</h3>
+                    <div class="handle">@briankrebs</div>
+                    <p>Investigative journalist, NYT bestselling author. Creator of KrebsOnSecurity blog. Leading voice in cybercrime reporting.</p>
+                </a>
+
+                <a href="https://x.com/schneier" class="account-card" target="_blank">
+                    <h3>Bruce Schneier</h3>
+                    <div class="handle">@schneier</div>
+                    <p>Security Guru. Renowned cryptographer, author of 14 books. Expert on security, privacy, and cryptography.</p>
+                </a>
+
+                <a href="https://x.com/SwiftOnSecurity" class="account-card" target="_blank">
+                    <h3>SwiftOnSecurity</h3>
+                    <div class="handle">@SwiftOnSecurity</div>
+                    <p>Systems security enthusiast. Most entertaining InfoSec account. 278K+ followers. Privacy advocate.</p>
+                </a>
+
+                <a href="https://x.com/e_kaspersky" class="account-card" target="_blank">
+                    <h3>Eugene Kaspersky</h3>
+                    <div class="handle">@e_kaspersky</div>
+                    <p>CEO & co-founder of Kaspersky Lab. Russian cybersecurity expert. Pioneer in antivirus development.</p>
+                </a>
+
+                <a href="https://x.com/gcluley" class="account-card" target="_blank">
+                    <h3>Graham Cluley</h3>
+                    <div class="handle">@gcluley</div>
+                    <p>InfoSec veteran since the 90s. Hall of Fame inductee. Security blogger and podcast host.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Threat Intelligence -->
+        <section class="category-section">
+            <h2 class="category-header">🔍 Threat Intelligence & Research</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/campuscodi" class="account-card" target="_blank">
+                    <h3>Catalin Cimpanu</h3>
+                    <div class="handle">@campuscodi</div>
+                    <p>Security journalist. Breaking cybersecurity news. Former ZDNet and BleepingComputer reporter.</p>
+                </a>
+
+                <a href="https://x.com/GossiTheDog" class="account-card" target="_blank">
+                    <h3>Kevin Beaumont</h3>
+                    <div class="handle">@GossiTheDog</div>
+                    <p>20+ years in cybersecurity. Former SOC manager. Creator of DoublePulsar blog. Vulnerability specialist.</p>
+                </a>
+
+                <a href="https://x.com/vxunderground" class="account-card" target="_blank">
+                    <h3>vx-underground</h3>
+                    <div class="handle">@vxunderground</div>
+                    <p>Malware sample collection. Breaking security news. Essential for malware researchers and reverse engineers.</p>
+                </a>
+
+                <a href="https://x.com/TheDFIRReport" class="account-card" target="_blank">
+                    <h3>The DFIR Report</h3>
+                    <div class="handle">@TheDFIRReport</div>
+                    <p>Real intrusion reports. Detailed threat actor TTPs. Essential reading for incident responders.</p>
+                </a>
+
+                <a href="https://x.com/cyb3rops" class="account-card" target="_blank">
+                    <h3>Florian Roth</h3>
+                    <div class="handle">@cyb3rops</div>
+                    <p>Threat intelligence expert. Creator of YARA rules. Active in malware analysis community.</p>
+                </a>
+
+                <a href="https://x.com/Gi7w0rm" class="account-card" target="_blank">
+                    <h3>Gitworm</h3>
+                    <div class="handle">@Gi7w0rm</div>
+                    <p>Malware & reverse engineering enthusiast. Curates cyber news. Covers data leaks and ransomware.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Industry Leaders -->
+        <section class="category-section">
+            <h2 class="category-header">💼 Industry Leaders</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/RobertMLee" class="account-card" target="_blank">
+                    <h3>Robert M. Lee</h3>
+                    <div class="handle">@RobertMLee</div>
+                    <p>Dragos CEO. Former USAF Cyber Warfare Officer. ICS/SCADA security expert. SANS instructor.</p>
+                </a>
+
+                <a href="https://x.com/taosecurity" class="account-card" target="_blank">
+                    <h3>Richard Bejtlich</h3>
+                    <div class="handle">@taosecurity</div>
+                    <p>Strategic thinking on cybersecurity. Brookings Institute fellow. USAF Intel veteran. Thought leader.</p>
+                </a>
+
+                <a href="https://x.com/runasand" class="account-card" target="_blank">
+                    <h3>Runa Sandvik</h3>
+                    <div class="handle">@runasand</div>
+                    <p>Early Tor developer. Former NYT security director. Privacy advocate. Independent security researcher.</p>
+                </a>
+
+                <a href="https://x.com/RidT" class="account-card" target="_blank">
+                    <h3>Thomas Rid</h3>
+                    <div class="handle">@RidT</div>
+                    <p>Professor at Johns Hopkins. Expert on cyber warfare, disinformation, and geopolitics of security.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Bug Bounty & Hacking -->
+        <section class="category-section">
+            <h2 class="category-header">🐛 Bug Bounty & Ethical Hacking</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/NahamSec" class="account-card" target="_blank">
+                    <h3>Ben Sadeghipour (NahamSec)</h3>
+                    <div class="handle">@NahamSec</div>
+                    <p>Bug bounty hunter. Hacker education advocate. Popular YouTube channel and Twitch streams.</p>
+                </a>
+
+                <a href="https://x.com/samykamkar" class="account-card" target="_blank">
+                    <h3>Samy Kamkar</h3>
+                    <div class="handle">@samykamkar</div>
+                    <p>Hacker, researcher, entrepreneur. Famous for MySpace worm. Hardware hacking expert.</p>
+                </a>
+
+                <a href="https://x.com/jhaddix" class="account-card" target="_blank">
+                    <h3>Jason Haddix</h3>
+                    <div class="handle">@jhaddix</div>
+                    <p>VP of Research at BugCrowd. Web application security expert. Bug bounty methodology pioneer.</p>
+                </a>
+
+                <a href="https://x.com/stokfredrik" class="account-card" target="_blank">
+                    <h3>InsiderPhD</h3>
+                    <div class="handle">@stokfredrik</div>
+                    <p>Bug bounty hunter and educator. YouTube tutorials on web security. Beginner-friendly content.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- News & Media -->
+        <section class="category-section">
+            <h2 class="category-header">📰 Security News & Journalism</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/BleepinComputer" class="account-card" target="_blank">
+                    <h3>BleepingComputer</h3>
+                    <div class="handle">@BleepinComputer</div>
+                    <p>Breaking security news. Malware removal guides. Trusted source for latest cyber threats.</p>
+                </a>
+
+                <a href="https://x.com/KimZetter" class="account-card" target="_blank">
+                    <h3>Kim Zetter</h3>
+                    <div class="handle">@KimZetter</div>
+                    <p>Award-winning journalist. Author of book on Stuxnet. Covers cybersecurity and election security.</p>
+                </a>
+
+                <a href="https://x.com/theJoshMeister" class="account-card" target="_blank">
+                    <h3>Josh Long</h3>
+                    <div class="handle">@theJoshMeister</div>
+                    <p>macOS security specialist. 130K+ followers. Journalist covering Apple security and digital privacy.</p>
+                </a>
+
+                <a href="https://x.com/thegrugq" class="account-card" target="_blank">
+                    <h3>thegrugq</h3>
+                    <div class="handle">@thegrugq</div>
+                    <p>Security researcher. OPSEC expert. Analysis of security operations and threat intelligence.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Official Organizations -->
+        <section class="category-section">
+            <h2 class="category-header">🏛️ Official Organizations</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/USCERT_gov" class="account-card" target="_blank">
+                    <h3>US-CERT</h3>
+                    <div class="handle">@USCERT_gov</div>
+                    <p>United States Computer Emergency Readiness Team. Official CISA threat advisories and alerts.</p>
+                </a>
+
+                <a href="https://x.com/sans_isc" class="account-card" target="_blank">
+                    <h3>SANS Internet Storm Center</h3>
+                    <div class="handle">@sans_isc</div>
+                    <p>Real-time cyber threat intelligence. Daily handler diaries. 20+ years of security research.</p>
+                </a>
+
+                <a href="https://x.com/NCSC" class="account-card" target="_blank">
+                    <h3>NCSC</h3>
+                    <div class="handle">@NCSC</div>
+                    <p>UK National Cyber Security Centre. Official UK government cyber security guidance.</p>
+                </a>
+
+                <a href="https://x.com/FBI" class="account-card" target="_blank">
+                    <h3>FBI</h3>
+                    <div class="handle">@FBI</div>
+                    <p>Federal Bureau of Investigation. Cybercrime alerts and public safety announcements.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Bonus: Essential Follows -->
+        <section class="category-section">
+            <h2 class="category-header">⭐ More Essential Follows</h2>
+            <div class="accounts-grid">
+                <a href="https://x.com/DailyDarkWeb" class="account-card" target="_blank">
+                    <h3>Daily Dark Web</h3>
+                    <div class="handle">@DailyDarkWeb</div>
+                    <p>Dark web monitoring. Data breach alerts. Underground forum tracking.</p>
+                </a>
+
+                <a href="https://x.com/BushidoToken" class="account-card" target="_blank">
+                    <h3>Will (BushidoToken)</h3>
+                    <div class="handle">@BushidoToken</div>
+                    <p>Threat intelligence analyst. Active in security community. Regular threat updates.</p>
+                </a>
+
+                <a href="https://x.com/dan_kaminsky" class="account-card" target="_blank">
+                    <h3>Dan Kaminsky</h3>
+                    <div class="handle">@dan_kaminsky</div>
+                    <p>Security researcher. Famous for DNS vulnerability discovery. Chief Scientist at White Ops.</p>
+                </a>
+
+                <a href="https://x.com/lennyzeltser" class="account-card" target="_blank">
+                    <h3>Lenny Zeltser</h3>
+                    <div class="handle">@lennyzeltser</div>
+                    <p>The "Yoda" of malware analysis. SANS instructor. Essential follow for malware researchers.</p>
+                </a>
+
+                <a href="https://x.com/hackerfantastic" class="account-card" target="_blank">
+                    <h3>Hacker Fantastic</h3>
+                    <div class="handle">@hackerfantastic</div>
+                    <p>Security researcher. Vulnerability disclosure. Active in exploit development community.</p>
+                </a>
+
+                <a href="https://x.com/maddiestone" class="account-card" target="_blank">
+                    <h3>Maddie Stone</h3>
+                    <div class="handle">@maddiestone</div>
+                    <p>Google Project Zero researcher. Zero-day exploit expert. Regular conference speaker.</p>
+                </a>
+            </div>
+        </section>
+
+        <div class="intro-box" style="margin-top: 60px;">
+            <h2>🚀 Keep Exploring</h2>
+            <p>This is just the beginning! X has hundreds more cybersecurity professionals worth following. Use hashtags like <strong>#CyberSecurity</strong>, <strong>#InfoSec</strong>, <strong>#BugBounty</strong>, and <strong>#ThreatIntel</strong> to discover more experts.</p>
+            <p>Follow these accounts, engage with their content, and let X's algorithm guide you to the broader community!</p>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
