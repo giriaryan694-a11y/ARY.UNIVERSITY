@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Channels - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .disclaimer-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 35px;
+            margin: 40px 0;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .disclaimer-box {
+            background: rgba(255, 193, 7, 0.15);
+            border-left-color: #ffc107;
+        }
+
+        body.light .disclaimer-box {
+            background: rgba(255, 152, 0, 0.15);
+            border-left-color: #ff9800;
+        }
+
+        .disclaimer-box h2 {
+            margin-top: 0;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        body.dark .disclaimer-box h2 { color: #ffc107; }
+        body.light .disclaimer-box h2 { color: #ff9800; }
+
+        .disclaimer-box h3 {
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+
+        body.dark .disclaimer-box h3 { color: #ffd54f; }
+        body.light .disclaimer-box h3 { color: #f57c00; }
+
+        .disclaimer-box p {
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        .disclaimer-box ul {
+            margin: 15px 0 15px 25px;
+            line-height: 1.8;
+        }
+
+        .disclaimer-box li {
+            margin-bottom: 10px;
+        }
+
+        .recommendation-box {
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid;
+        }
+
+        body.dark .recommendation-box {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+        }
+
+        body.light .recommendation-box {
+            background: rgba(0, 153, 76, 0.1);
+            border-color: #00994c;
+        }
+
+        .recommendation-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        body.dark .recommendation-box h3 { color: #00ff88; }
+        body.light .recommendation-box h3 { color: #00994c; }
+
+        .buttons-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .buttons-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 40px;
+        }
+
+        body.dark .buttons-section h2 { color: #00d4ff; }
+        body.light .buttons-section h2 { color: #0066cc; }
+
+        .language-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .language-card {
+            backdrop-filter: blur(10px);
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 40px 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            min-width: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .language-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        body.light .language-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.4);
+        }
+
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        body.light .language-card::before {
+            background: linear-gradient(45deg, transparent, rgba(0, 102, 204, 0.2), transparent);
+        }
+
+        .language-card:hover::before {
+            left: 100%;
+        }
+
+        .language-card:hover {
+            transform: translateY(-15px) scale(1.05);
+        }
+
+        body.dark .language-card:hover {
+            box-shadow: 0 20px 50px rgba(0, 255, 136, 0.5);
+            border-color: #00ff88;
+        }
+
+        body.light .language-card:hover {
+            box-shadow: 0 20px 50px rgba(0, 102, 204, 0.5);
+            border-color: #0066cc;
+        }
+
+        .language-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .language-card h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .language-card h3 { color: #00d4ff; }
+        body.light .language-card h3 { color: #0066cc; }
+
+        .language-card p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .language-card p { color: #ccc; }
+        body.light .language-card p { color: #555; }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-top: 15px;
+            border: 1px solid;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .badge {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        body.light .badge {
+            background: rgba(255, 87, 34, 0.2);
+            color: #ff5722;
+            border-color: #ff5722;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .language-buttons { flex-direction: column; align-items: center; }
+            .language-card { min-width: 250px; padding: 30px 40px; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>📺 YouTube Cybersecurity Channels</h1>
+            <p class="intro-text">Learn from the best creators in cybersecurity education</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="disclaimer-box">
+            <h2>⚠️ Important Disclaimer</h2>
+            
+            <h3>🎓 About Courses and Certifications</h3>
+            <p><strong>Many YouTube channels try to sell their own courses and certifications.</strong> While some of these courses may be valuable, always verify their credibility before investing your time and money. Not all certifications carry the same weight in the industry.</p>
+            
+            <div class="recommendation-box">
+                <h3>✅ I Recommend Industry-Recognized Certifications:</h3>
+                <ul>
+                    <li><strong>CEH (Certified Ethical Hacker)</strong> - EC-Council's globally recognized certification</li>
+                    <li><strong>eJPT (eLearnSecurity Junior Penetration Tester)</strong> - Practical, beginner-friendly certification</li>
+                    <li><strong>OSCP (Offensive Security Certified Professional)</strong> - Highly respected hands-on certification</li>
+                    <li><strong>CISSP (Certified Information Systems Security Professional)</strong> - For security management</li>
+                    <li><strong>CompTIA Security+</strong> - Excellent entry-level certification</li>
+                    <li><strong>PNPT (Practical Network Penetration Tester)</strong> - TCM Security's practical cert</li>
+                </ul>
+            </div>
+
+            <p><strong>Before purchasing any course or certification:</strong></p>
+            <ul>
+                <li>Research if the certification is recognized by employers in your target industry</li>
+                <li>Check reviews from multiple sources, not just the creator's website</li>
+                <li>Verify the instructor's credentials and real-world experience</li>
+                <li>Compare prices with industry-standard certifications</li>
+                <li>Look for free alternatives or trial periods first</li>
+            </ul>
+
+            <h3>🛠️ About Hacking Tools, Hardware & DIY Kits</h3>
+            <p><strong>Many channels promote hacking tools, DIY hardware, and security toolkits</strong> like Flipper Zero, WiFi Pineapple, Bash Bunny, Rubber Ducky, Meow Kit, and various custom hardware. While these tools are fascinating and can be educational, there's an important reality check:</p>
+
+            <p><strong>⚠️ Making or purchasing these tools without knowing the basics is useless.</strong></p>
+
+            <p>Here's why:</p>
+            <ul>
+                <li><strong>Tools are not magic:</strong> A Flipper Zero won't make you a hacker. It's a tool that requires knowledge of radio frequencies, protocols, and security concepts to use effectively.</li>
+                <li><strong>You need fundamentals first:</strong> Understanding networking, cryptography, and security principles is essential before touching hardware hacking tools.</li>
+                <li><strong>Legal risks:</strong> Owning these tools can be illegal in some jurisdictions without proper authorization or if used improperly.</li>
+                <li><strong>Waste of money:</strong> These tools can be expensive. Buying them without the knowledge to use them is throwing money away.</li>
+                <li><strong>False confidence:</strong> Having tools doesn't equal having skills. Learn the theory and practice in legal environments first.</li>
+            </ul>
+
+            <div class="recommendation-box">
+                <h3>✅ The Right Approach:</h3>
+                <ul>
+                    <li>Learn the fundamentals of networking, operating systems, and security concepts first</li>
+                    <li>Practice in legal environments (CTFs, bug bounties, lab platforms)</li>
+                    <li>Understand the theory behind what these tools do</li>
+                    <li>Start with software tools before investing in hardware</li>
+                    <li>Only purchase hardware when you understand exactly how and why you'll use it</li>
+                    <li>Ensure you have legal authorization for any security testing</li>
+                </ul>
+            </div>
+
+            <h3>💡 Bottom Line</h3>
+            <p><strong>Focus on building knowledge and skills, not collecting tools.</strong> The best hackers aren't the ones with the most expensive gadgets—they're the ones who deeply understand security principles and can think creatively with any tool at their disposal.</p>
+
+            <p>Watch YouTube channels for learning and inspiration, but be a critical consumer. Verify claims, research recommendations, and always prioritize understanding over tool collection.</p>
+        </div>
+
+        <section class="buttons-section">
+            <h2>Choose Your Language</h2>
+            
+            <div class="language-buttons">
+                <a href="eng_yt" class="language-card">
+                    <div class="language-icon">🌍</div>
+                    <h3>English Channels</h3>
+                    <p>Access content from experts, official conferences, and international security professionals</p>
+                    <span class="badge">MORE EXPERTS & OFFICIALS</span>
+                </a>
+
+                <a href="hin_yt" class="language-card">
+                    <div class="language-icon">🇮🇳</div>
+                    <h3>Hindi Channels</h3>
+                    <p>Learn cybersecurity in Hindi from Indian creators and educators</p>
+                    <span class="badge">हिंदी में सीखें</span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
