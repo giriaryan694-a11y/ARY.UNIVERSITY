@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi YouTube Channels - ARY.UNIVERSITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #e0e7ff);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle, .back-button {
+            position: fixed;
+            top: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            text-decoration: none;
+        }
+
+        .theme-toggle { right: 20px; }
+        .back-button { left: 20px; }
+
+        body.dark .back-button { color: #00ff88; }
+        body.light .theme-toggle, body.light .back-button {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        body.light .back-button { color: #0066cc; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            border-bottom: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        body.dark header {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-color: #00ff88;
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #0066cc;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        body.dark h1 {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light h1 {
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .hindi-text {
+            font-size: 1.3em;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        body.dark .hindi-text { color: #00ff88; }
+        body.light .hindi-text { color: #0066cc; }
+
+        .category-section {
+            margin: 50px 0;
+        }
+
+        .category-header {
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        body.dark .category-header {
+            color: #00d4ff;
+            border-bottom-color: #00ff88;
+        }
+
+        body.light .category-header {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .channel-card {
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark .channel-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        body.light .channel-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .channel-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        body.light .channel-card::before {
+            background: linear-gradient(45deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        }
+
+        .channel-card:hover::before {
+            left: 100%;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-8px);
+        }
+
+        body.dark .channel-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            border-color: #00ff88;
+        }
+
+        body.light .channel-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+            border-color: #0066cc;
+        }
+
+        .channel-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .channel-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .channel-card h3 { color: #00d4ff; }
+        body.light .channel-card h3 { color: #0066cc; }
+
+        .channel-card p {
+            font-size: 0.95em;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark .channel-card p { color: #ccc; }
+        body.light .channel-card p { color: #555; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .channels-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="dark">
+    <a href="../index.html" class="back-button"><span>← Back</span></a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>🇮🇳 Hindi Cybersecurity Channels</h1>
+            <p class="intro-text">Learn cybersecurity in Hindi from Indian creators</p>
+            <p class="hindi-text">हिंदी में साइबर सुरक्षा सीखें</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Educational & Training -->
+        <section class="category-section">
+            <h2 class="category-header">🎓 Educational & Training Channels</h2>
+            <div class="channels-grid">
+                <a href="https://youtube.com/@wscubetech" class="channel-card" target="_blank">
+                    <div class="channel-icon">📚</div>
+                    <h3>WsCube Tech</h3>
+                    <p>Comprehensive tech education covering programming, web development, and cybersecurity in Hindi. Professional courses and tutorials for beginners to advanced learners.</p>
+                </a>
+
+                <a href="https://youtube.com/@wscubecybersecurity" class="channel-card" target="_blank">
+                    <div class="channel-icon">🔐</div>
+                    <h3>WsCube Cybersecurity</h3>
+                    <p>Dedicated cybersecurity channel from WsCube Tech. Focused tutorials on ethical hacking, network security, and information security in Hindi.</p>
+                </a>
+
+                <a href="https://youtube.com/@codewithharry" class="channel-card" target="_blank">
+                    <div class="channel-icon">💻</div>
+                    <h3>Code With Harry</h3>
+                    <p>One of India's largest programming channels. Covers web development, Python, Java, and cybersecurity basics with excellent Hindi explanations.</p>
+                </a>
+
+                <a href="https://youtube.com/@apnacollegeofficial" class="channel-card" target="_blank">
+                    <div class="channel-icon">🎓</div>
+                    <h3>Apna College</h3>
+                    <p>Popular educational channel for computer science students. Covers DSA, programming languages, and cybersecurity fundamentals in Hindi with placement guidance.</p>
+                </a>
+
+                <a href="https://youtube.com/@techchipnet" class="channel-card" target="_blank">
+                    <div class="channel-icon">🔧</div>
+                    <h3>Tech Chip Net</h3>
+                    <p>Technology and cybersecurity tutorials in Hindi. Covers ethical hacking tools, networking concepts, and security tips for beginners.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Ethical Hacking & Security -->
+        <section class="category-section">
+            <h2 class="category-header">🎯 Ethical Hacking & Security</h2>
+            <div class="channels-grid">
+                <a href="https://youtube.com/@hackersking101" class="channel-card" target="_blank">
+                    <div class="channel-icon">👑</div>
+                    <h3>Hackers King 101</h3>
+                    <p>Ethical hacking tutorials and cybersecurity training in Hindi. Learn penetration testing, vulnerability assessment, and security tools.</p>
+                </a>
+
+                <a href="https://youtube.com/@hetroublehacker" class="channel-card" target="_blank">
+                    <div class="channel-icon">💀</div>
+                    <h3>He Trouble Hacker</h3>
+                    <p>Hindi channel focused on ethical hacking, bug bounty hunting, and web application security. Practical demonstrations and real-world scenarios.</p>
+                </a>
+
+                <a href="https://youtube.com/@spinthehack" class="channel-card" target="_blank">
+                    <div class="channel-icon">🔄</div>
+                    <h3>Spin The Hack</h3>
+                    <p>Cybersecurity and ethical hacking content in Hindi. Covers hacking techniques, security tools, and penetration testing methodologies.</p>
+                </a>
+
+                <a href="https://youtube.com/@thecyberexpert" class="channel-card" target="_blank">
+                    <div class="channel-icon">🛡️</div>
+                    <h3>The Cyber Expert</h3>
+                    <p>Expert-level cybersecurity training in Hindi. Advanced tutorials on network security, cryptography, and security certifications guidance.</p>
+                </a>
+
+                <a href="https://youtube.com/@droporganization" class="channel-card" target="_blank">
+                    <div class="channel-icon">💧</div>
+                    <h3>Drop Organization</h3>
+                    <p>Cybersecurity awareness and ethical hacking tutorials. Focus on security tools, privacy protection, and safe computing practices in Hindi.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Linux & Technical -->
+        <section class="category-section">
+            <h2 class="category-header">🐧 Linux & Technical Skills</h2>
+            <div class="channels-grid">
+                <a href="https://youtube.com/@linuxndroid" class="channel-card" target="_blank">
+                    <div class="channel-icon">🐧</div>
+                    <h3>Linux N Droid</h3>
+                    <p>Linux tutorials, Android security, and terminal commands in Hindi. Perfect for learning Linux basics essential for cybersecurity professionals.</p>
+                </a>
+
+                <a href="https://youtube.com/@bittentech" class="channel-card" target="_blank">
+                    <div class="channel-icon">⚙️</div>
+                    <h3>Bitten Tech</h3>
+                    <p>Technology tutorials covering cybersecurity, networking, and system administration in Hindi. Practical guides and technical deep dives.</p>
+                </a>
+
+                <a href="https://youtube.com/@clicksandbits" class="channel-card" target="_blank">
+                    <div class="channel-icon">🖱️</div>
+                    <h3>Clicks And Bits</h3>
+                    <p>Tech tutorials and cybersecurity basics in Hindi. Covers computer fundamentals, networking concepts, and security awareness.</p>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                setCookie('theme', 'light', 365);
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        });
+    </script>
+</body>
+</html>
