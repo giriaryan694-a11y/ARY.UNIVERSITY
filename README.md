@@ -249,19 +249,10 @@ Special thanks to:
 
 ---
 
-## 📞 Contact & Support
-
-### Found this helpful?
-- ⭐ Star this repository
+## Found this helpful?
 - 🔗 Share with others learning cybersecurity
 - 🐛 Report bugs via GitHub Issues
 - 💡 Suggest improvements via Pull Requests
-
-### Connect
-- **Portfolio**: [Your Portfolio URL]
-- **LinkedIn**: [Your LinkedIn]
-- **Twitter/X**: [Your Twitter]
-- **GitHub**: [Your GitHub]
 
 ---
 
