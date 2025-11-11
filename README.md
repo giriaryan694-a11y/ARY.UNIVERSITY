@@ -1,4 +1,3 @@
-<parameter name="language">markdown" version_uuid="f8a04246-b9c5-4fad-8a0a-4688ebfbc6a1">
 # 🎓 ARY.UNIVERSITY
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
