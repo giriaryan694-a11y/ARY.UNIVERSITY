@@ -94,7 +94,7 @@ ARY.UNIVERSITY/
 
 ## 🚀 Getting Started
 
-Simply visit **[ARY.UNIVERSITY](https://ary.university)** in your web browser to start learning!
+Simply visit **[ARY.UNIVERSITY](https://giriaryan694-a11y.github.io/ARY.UNIVERSITY/)** in your web browser to start learning!
 
 ### For Developers
 
